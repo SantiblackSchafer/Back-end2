@@ -10,24 +10,24 @@ dotenv.config();
 
 const app = express();
 
-
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
+// Passport initialization
 initializePassport();
 app.use(passport.initialize());
 
-
+// Routes
 app.use('/api/sessions', sessionRouter);
 
-
+// MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
-
+// Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
